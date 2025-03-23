@@ -1,12 +1,14 @@
 require('dotenv').config();
-const TelegramApi = require('./services/telegramApi');
+const TelegramApi = require('./services/api/telegramApi');
 const WebhookServer = require('./services/webhookServer');
 const CommandHandler = require('./services/commandHandler');
+const CurrencyApi = require('./services/api/currencyApi')
 
 class Bot {
     constructor() {
         this.telegramApi = new TelegramApi(process.env.TELEGRAM_ACCESS_TOKEN);
-        this.commandHandler = new CommandHandler(this.telegramApi, this.exchangeRateApi);
+        this.currencyApi = new CurrencyApi(process.env.EXCHANGE_ACCESS_TOKEN)
+        this.commandHandler = new CommandHandler(this.telegramApi, this.currencyApi);
         this.server = new WebhookServer(process.env.PORT, this.handleUpdate.bind(this));
     }
 

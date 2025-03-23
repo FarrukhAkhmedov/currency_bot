@@ -1,4 +1,5 @@
 const HttpHandler = require("./httpHandler");
+require('dotenv').config()
 
 class TelegramApi extends HttpHandler {
     constructor(accessToken) {
