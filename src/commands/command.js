@@ -1,3 +1,5 @@
+
+
 class Command{
     constructor(telegramApi){
         this.telegramApi = telegramApi

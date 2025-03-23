@@ -1,26 +1,30 @@
 const CurrencyCommand = require('../commands/currencyCommand');
 const StartCommand = require('../commands/startCommand')
+const ErrorCommand = require('../commands/errorCommand')
 
 class CommandHandler {
     constructor(telegramApi, currencyApi) {
+        this.telegramApi = telegramApi
 
-        this.start = new StartCommand(telegramApi)
-        this.currency = new CurrencyCommand(telegramApi, currencyApi)
+        this.start = new StartCommand(this.telegramApi)
+        this.currency = new CurrencyCommand(this.telegramApi, currencyApi)
+        this.error = new ErrorCommand(this.telegramApi)
     }
 
     async process(chatId, text) {
+        const currencyPairRegExp = /^[A-Z]{3}-[A-Z]{3}$/
         switch(text){
             case "/start":
                 await this.start.greet(chatId)
                 break;
             case "/currency":
-                await this.currency.getCurrencyBase(chatId)
+                await this.currency.inform(chatId)
                 break;
             default:
-                await this.telegramApi.sendMessage(chatId, 
-                    "Ой! Что-то пошло не так." + 
-                    "\nУбедись, что ввел валютную пару в формате USD-EUR, или попробуй позже.");
-        
+                if(currencyPairRegExp.test(text)){
+                    return this.currency.exchange(text, chatId)
+                }
+                await this.error.unknownCommand(chatId)
         }
     }
 }
