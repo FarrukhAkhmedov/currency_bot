@@ -13,11 +13,11 @@ class ExchangeApi extends HttpHandler{
                     base: base
                 }
             })
-            console.log(res);
+
             
             return res.data.conversion_rates
         } catch (error){
-
+            console.error( "Ошибка доступа к API курса валют", error.message);
         }
     }
 }

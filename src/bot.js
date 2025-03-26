@@ -17,12 +17,11 @@ class Bot {
             await this.telegramApi.setWebhook(process.env.WEBHOOK_URL);
             this.server.start();
         } catch (error) {
-            console.error("Ошибка запуска бота:", error);
+            console.error("Ошибка запуска бота:", error.message);
         }
     }
 
     async handleUpdate(update) {
-        console.log("Получено сообщение от Telegram:", update);
         if (!update.message || !update.message.text) return;
 
         const chatId = update.message.chat.id;

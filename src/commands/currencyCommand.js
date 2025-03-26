@@ -13,12 +13,20 @@ class CurrencyCommand extends Command{
     }
 
     async exchange(text, chatId){
-        const base = text.split('-')[0].trim()
-        const currency = text.split('-')[1].trim()
-        
-        const rate = await this.currencyApi.getExchangeRate(base)
-
-        return this.telegramApi.sendMessage(chatId, `Текущий курс ${base} к ${currency}: ${rate[currency]}`)
+        try{
+            const base = text.split('-')[0].trim()
+            const currency = text.split('-')[1].trim()
+            
+            const rate = await this.currencyApi.getExchangeRate(base)
+    
+            await this.telegramApi.sendMessage(chatId, `Текущий курс ${base} к ${currency}: ${rate[currency]}`)
+        } catch(error){
+            console.error(error);
+            await this.telegramApi.sendMessage(chatId, 
+                "Ой! Что-то пошло не так." + 
+                "\nУбедись, что ввел валютную пару в формате USD-EUR, или попробуй позже.")
+            
+        }
 
     }
 

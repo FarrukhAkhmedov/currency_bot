@@ -15,7 +15,7 @@ class WebhookServer {
                         res.writeHead(200, { "Content-Type": "application/json" });
                         res.end(JSON.stringify({ status: "ok" }));
                     } catch (error) {
-                        console.error("Ошибка обработки вебхука:", error);
+                        console.error("Ошибка обработки вебхука:", error.message);
                         res.writeHead(500);
                         res.end();
                     }

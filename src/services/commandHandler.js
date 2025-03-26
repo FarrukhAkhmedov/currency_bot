@@ -13,19 +13,21 @@ class CommandHandler {
 
     async process(chatId, text) {
         const currencyPairRegExp = /^[A-Z]{3}-[A-Z]{3}$/
-        switch(text){
-            case "/start":
-                await this.start.greet(chatId)
-                break;
-            case "/currency":
-                await this.currency.inform(chatId)
-                break;
-            default:
-                if(currencyPairRegExp.test(text)){
-                    return this.currency.exchange(text, chatId)
-                }
-                await this.error.unknownCommand(chatId)
-        }
+
+            switch(text){
+                case "/start":
+                    await this.start.greet(chatId)
+                    break;
+                case "/currency":
+                    await this.currency.inform(chatId)
+                    break;
+                default:
+                    if(currencyPairRegExp.test(text)){
+                        return this.currency.exchange(text, chatId)
+                    }
+                    await this.error.unknownCommand(chatId)
+            }
+        
     }
 }
 
